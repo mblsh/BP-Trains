@@ -1,0 +1,67 @@
+﻿Deliver one-by-one
+@0, n = G, q = Tr2, load= { P5 }, drop= {  }, moving G->F:E8 arr 4
+@0, n = A, q = Tr1, load= {  }, drop= {  }, moving A->B:E1 arr 2
+@2, n = B, q = Tr1, load= { P11 }, drop= {  }, moving B->C:E2 arr 4
+@4, n = F, q = Tr2, load= {  }, drop= {  }, moving F->L:E10 arr 5
+@4, n = C, q = Tr1, load= {  }, drop= {  }, moving C->E:E3 arr 7
+@5, n = L, q = Tr2, load= {  }, drop= {  }, moving L->A:E11 arr 8
+@7, n = E, q = Tr1, load= {  }, drop= {  }, moving E->D:E4 arr 10
+@8, n = A, q = Tr2, load= {  }, drop= { P5 }, moving A->B:E1 arr 10
+@10, n = D, q = Tr1, load= {  }, drop= {  }, moving D->H:E5 arr 11
+@10, n = B, q = Tr2, load= { P12 }, drop= {  }, moving B->C:E2 arr 12
+@11, n = H, q = Tr1, load= {  }, drop= {  }, moving H->K:E6 arr 15
+@12, n = C, q = Tr2, load= {  }, drop= {  }, moving C->E:E3 arr 15
+@15, n = K, q = Tr1, load= {  }, drop= { P11 }, moving K->H:E6 arr 19
+@15, n = E, q = Tr2, load= {  }, drop= {  }, moving E->D:E4 arr 18
+@18, n = D, q = Tr2, load= { P4 }, drop= { P12 }, moving D->H:E5 arr 19
+@19, n = H, q = Tr2, load= {  }, drop= {  }, moving H->K:E6 arr 23
+@19, n = H, q = Tr1, load= { P7 }, drop= {  }, moving H->D:E5 arr 20
+@20, n = D, q = Tr1, load= {  }, drop= {  }, moving D->F:E7 arr 23
+@23, n = K, q = Tr2, load= {  }, drop= { P4 }, moving K->H:E6 arr 27
+@23, n = F, q = Tr1, load= {  }, drop= {  }, moving F->L:E10 arr 24
+@24, n = L, q = Tr1, load= {  }, drop= {  }, moving L->A:E11 arr 27
+@27, n = A, q = Tr1, load= {  }, drop= { P7 }, moving A->B:E1 arr 29
+@27, n = H, q = Tr2, load= {  }, drop= {  }, moving H->D:E5 arr 28
+@28, n = D, q = Tr2, load= {  }, drop= {  }, moving D->E:E4 arr 31
+@29, n = B, q = Tr1, load= { P13 }, drop= {  }, moving B->C:E2 arr 31
+@31, n = C, q = Tr1, load= {  }, drop= {  }, moving C->E:E3 arr 34
+@31, n = E, q = Tr2, load= { P3 }, drop= {  }, moving E->C:E3 arr 34
+@34, n = E, q = Tr1, load= {  }, drop= {  }, moving E->D:E4 arr 37
+@34, n = C, q = Tr2, load= { P2 }, drop= { P3 }, moving C->E:E3 arr 37
+@37, n = D, q = Tr1, load= {  }, drop= {  }, moving D->H:E5 arr 38
+@37, n = E, q = Tr2, load= {  }, drop= {  }, moving E->D:E4 arr 40
+@38, n = H, q = Tr1, load= {  }, drop= { P13 }, moving H->D:E5 arr 39
+@39, n = D, q = Tr1, load= {  }, drop= {  }, moving D->F:E7 arr 42
+@40, n = D, q = Tr2, load= {  }, drop= {  }, moving D->H:E5 arr 41
+@41, n = H, q = Tr2, load= {  }, drop= {  }, moving H->K:E6 arr 45
+@42, n = F, q = Tr1, load= {  }, drop= {  }, moving F->L:E10 arr 43
+@43, n = L, q = Tr1, load= { P6 }, drop= {  }, moving L->A:E11 arr 46
+@45, n = K, q = Tr2, load= {  }, drop= { P2 }, staying
+@46, n = A, q = Tr1, load= {  }, drop= {  }, moving A->B:E1 arr 48
+@48, n = B, q = Tr1, load= {  }, drop= { P6 }, moving B->A:E1 arr 50
+@50, n = A, q = Tr1, load= {  }, drop= {  }, moving A->L:E11 arr 53
+@53, n = L, q = Tr1, load= { P8 }, drop= {  }, moving L->A:E11 arr 56
+@56, n = A, q = Tr1, load= {  }, drop= { P8 }, staying
+Deliver with pickups
+@0, n = G, q = Tr2, load= { P5 }, drop= {  }, moving G->F:E8 arr 4
+@0, n = A, q = Tr1, load= {  }, drop= {  }, moving A->B:E1 arr 2
+@2, n = B, q = Tr1, load= { P11,P12,P13 }, drop= {  }, moving B->C:E2 arr 4
+@4, n = F, q = Tr2, load= {  }, drop= {  }, moving F->L:E10 arr 5
+@4, n = C, q = Tr1, load= { P2 }, drop= {  }, moving C->E:E3 arr 7
+@5, n = L, q = Tr2, load= { P8 }, drop= {  }, moving L->A:E11 arr 8
+@7, n = E, q = Tr1, load= {  }, drop= {  }, moving E->D:E4 arr 10
+@8, n = A, q = Tr2, load= {  }, drop= { P5,P8 }, moving A->L:E11 arr 11
+@10, n = D, q = Tr1, load= { P4 }, drop= { P12 }, moving D->H:E5 arr 11
+@11, n = H, q = Tr1, load= {  }, drop= { P13 }, moving H->K:E6 arr 15
+@11, n = L, q = Tr2, load= { P6 }, drop= {  }, moving L->A:E11 arr 14
+@14, n = A, q = Tr2, load= {  }, drop= {  }, moving A->B:E1 arr 16
+@15, n = K, q = Tr1, load= {  }, drop= { P11,P2,P4 }, moving K->H:E6 arr 19
+@16, n = B, q = Tr2, load= {  }, drop= { P6 }, moving B->C:E2 arr 18
+@18, n = C, q = Tr2, load= {  }, drop= {  }, moving C->E:E3 arr 21
+@19, n = H, q = Tr1, load= { P7 }, drop= {  }, moving H->D:E5 arr 20
+@20, n = D, q = Tr1, load= {  }, drop= {  }, moving D->F:E7 arr 23
+@21, n = E, q = Tr2, load= { P3 }, drop= {  }, moving E->C:E3 arr 24
+@23, n = F, q = Tr1, load= {  }, drop= {  }, moving F->L:E10 arr 24
+@24, n = L, q = Tr1, load= {  }, drop= {  }, moving L->A:E11 arr 27
+@24, n = C, q = Tr2, load= {  }, drop= { P3 }, staying
+@27, n = A, q = Tr1, load= {  }, drop= { P7 }, staying

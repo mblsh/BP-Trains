@@ -1,0 +1,24 @@
+﻿5 // number of stations
+A // station name
+B // station name
+C // station name
+D
+E
+
+3 // number of routes
+E1,A,B,3 // route from A to B that takes 3 units of time
+E2,B,C,1 // route from B to C that takes 1 unit of time
+F1,D,E,2
+
+6 // number of deliveries to be performed
+P1,A,C,5 // package P1 with weight 5 located currently at station A that must be delivered to station C
+P2,C,A,3 
+P3,B,C,4 
+P4,E,D,1
+P5,A,C,1
+P6,B,C,3
+
+3 // number of trains
+Q1,B,6 // train T1 with capacity 6 located at station B
+Q2,D,4 
+Q3,A,6 

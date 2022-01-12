@@ -1,0 +1,7 @@
+﻿@0, n = A, q = Q3, load= { P1 }, drop= {  }, moving A->B:E1 arr 3
+@0, n = B, q = Q1, load= { P3 }, drop= {  }, moving B->C:E2 arr 1
+@1, n = C, q = Q1, load= { P2 }, drop= { P3 }, moving C->B:E2 arr 2
+@2, n = B, q = Q1, load= {  }, drop= {  }, moving B->A:E1 arr 5
+@3, n = B, q = Q3, load= {  }, drop= {  }, moving B->C:E2 arr 4
+@4, n = C, q = Q3, load= {  }, drop= { P1 }, staying
+@5, n = A, q = Q1, load= {  }, drop= { P2 }, staying

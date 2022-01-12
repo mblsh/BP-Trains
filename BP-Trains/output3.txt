@@ -1,0 +1,28 @@
+﻿Deliver one-by-one
+@0, n = A, q = Q3, load= { P1 }, drop= {  }, moving A->B:E1 arr 3
+@0, n = B, q = Q1, load= { P3 }, drop= {  }, moving B->C:E2 arr 1
+@0, n = D, q = Q2, load= {  }, drop= {  }, moving D->E:F1 arr 2
+@1, n = C, q = Q1, load= { P2 }, drop= { P3 }, moving C->B:E2 arr 2
+@2, n = B, q = Q1, load= {  }, drop= {  }, moving B->A:E1 arr 5
+@2, n = E, q = Q2, load= { P4 }, drop= {  }, moving E->D:F1 arr 4
+@3, n = B, q = Q3, load= {  }, drop= {  }, moving B->C:E2 arr 4
+@4, n = C, q = Q3, load= {  }, drop= { P1 }, moving C->B:E2 arr 5
+@4, n = D, q = Q2, load= {  }, drop= { P4 }, staying
+@5, n = A, q = Q1, load= { P5 }, drop= { P2 }, moving A->B:E1 arr 8
+@5, n = B, q = Q3, load= { P6 }, drop= {  }, moving B->C:E2 arr 6
+@6, n = C, q = Q3, load= {  }, drop= { P6 }, staying
+@8, n = B, q = Q1, load= {  }, drop= {  }, moving B->C:E2 arr 9
+@9, n = C, q = Q1, load= {  }, drop= { P5 }, staying
+Deliver with pickups
+@0, n = A, q = Q3, load= { P1,P5 }, drop= {  }, moving A->B:E1 arr 3
+@0, n = B, q = Q1, load= { P3 }, drop= {  }, moving B->C:E2 arr 1
+@0, n = D, q = Q2, load= {  }, drop= {  }, moving D->E:F1 arr 2
+@1, n = C, q = Q1, load= { P2 }, drop= { P3 }, moving C->B:E2 arr 2
+@2, n = B, q = Q1, load= {  }, drop= {  }, moving B->A:E1 arr 5
+@2, n = E, q = Q2, load= { P4 }, drop= {  }, moving E->D:F1 arr 4
+@3, n = B, q = Q3, load= {  }, drop= {  }, moving B->C:E2 arr 4
+@4, n = C, q = Q3, load= {  }, drop= { P1,P5 }, moving C->B:E2 arr 5
+@4, n = D, q = Q2, load= {  }, drop= { P4 }, staying
+@5, n = A, q = Q1, load= {  }, drop= { P2 }, staying
+@5, n = B, q = Q3, load= { P6 }, drop= {  }, moving B->C:E2 arr 6
+@6, n = C, q = Q3, load= {  }, drop= { P6 }, staying
