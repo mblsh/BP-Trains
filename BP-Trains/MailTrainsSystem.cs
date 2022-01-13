@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -367,6 +368,99 @@ namespace BPTrains
             return moves.OrderBy(m => m.StartTime).ToList();
         }
 
+        public List<Move> SolveWithGreedyTrains()
+        {
+            var moves = new List<Move>();
+
+            int currentTime = 0;
+
+            // iterate over time and consider system state at every timeframe
+            while (true)
+            {
+                // look for an idle trains (idle == not en route to next destination and still have valid targets)
+                foreach (var train in _trains.Where(t => t.TimeSpentEnRoute <= currentTime && !t.Parked))
+                {
+                    // plan the next move
+                    var nextMove = new Move() { StartStation = train.CurrentStation, StartTime = currentTime, Train = train };
+
+                    //see if it need to do a drop off or can pick something up at current station
+                    var packages2dropoff = train.Packages.Where(p => p.DropOff == train.CurrentStation).ToList();
+                    foreach (var p2d in packages2dropoff)
+                    {
+                        nextMove.DropOffs.Add(p2d);
+                        train.Packages.Remove(p2d);
+                    }
+
+                    Package package2pickup = _deliveries.FirstOrDefault(d => d.PickUp == train.CurrentStation
+                                                                         && d.Weight <= train.FreeCapacity);
+                    while (package2pickup != null)
+                    {
+                        nextMove.PickUps.Add(package2pickup);
+                        _deliveries.Remove(package2pickup);
+                        train.Packages.Add(package2pickup);
+
+                        package2pickup = _deliveries.FirstOrDefault(d => d.PickUp == train.CurrentStation
+                                                                         && d.Weight <= train.FreeCapacity);
+                    }
+
+                    //plan the route, choosing the nearest valid pick up or drop off
+                    var potentialTargets = _deliveries.Where(d=> d.Weight <= train.FreeCapacity)
+                                                                .Select(d => d.PickUp)
+                                                                .Union(train.Packages.Select(p => p.DropOff));
+
+                    if (!potentialTargets.Any())
+                    {
+                        // train has dropped everything off and there are no more suitable deliveries left
+                        train.Parked = true;
+                        nextMove.Route = null;
+                        moves.Add(nextMove);
+                        continue;
+                    }
+
+                    Station closestNextStation = null;
+                    Route nextRoute = null;
+                    var fastestTime = int.MaxValue;
+                    // consider potential next stations one by one and find the closest one
+                    foreach (var nextStation in potentialTargets)
+                    {
+                        var fastestRoute = GetFastestPath(train.CurrentStation, nextStation);
+                        if (fastestRoute == null)
+                            continue; // destination unreachable (package on different sub-network)
+                        var routeTime = fastestRoute.Sum(r => r.TravelTime);
+                        if (routeTime < fastestTime)
+                        {
+                            fastestTime = routeTime;
+                            nextRoute = fastestRoute.First();
+                            closestNextStation = nextRoute.Destination;
+                        }
+                    }
+
+                    if (closestNextStation == null) 
+                    {
+                        // unsolvable - one or more packages cannot be delivered
+                        train.Parked = true;
+                        nextMove.Route = null;
+                        moves.Add(nextMove);
+                        continue;
+                    }
+
+                    // start the train towards the chosen station
+                    train.CurrentStation = closestNextStation;
+                    train.TimeSpentEnRoute += nextRoute.TravelTime;
+                    nextMove.Route = nextRoute;
+                    moves.Add(nextMove);
+                }
+
+                currentTime++;
+
+                if (_trains.All(t => t.Parked))
+                    break;
+            }
+
+            return moves.OrderBy(m => m.StartTime).ToList();
+        }
+
+
         // TODO:
         public void SolveBetter()
         {
@@ -376,18 +470,10 @@ namespace BPTrains
             // to pick up, in order to nudge the train routes towards making pick ups along the way
             //
             // reduce the graph by removing stations with no packages along unique paths 
-            //
-            // move trains continuously in parallel rather than one by one, recalculating the routes on each stop
-            // to keep grabbing the nearest packages, regardless of their destination; then move towards the nearest drop-off
-            // when full (or consider drop-off points of packages already onboard together with nearest packages  
-            // waiting for a pick-up when choosing the next destination)
-            // this will probably have to be done on time basis; iterating over timeframes rather than deliveries,
-            // and checking if any of the trains have arrived at the next stop and needs a re-route
             // 
             // break up the rail network into components served by dedicated trains to promote route locality?
             // train can carry a set of edge weight reduction coefficients to tilt the pathfinding towards a particular
             // portion of the network
-
         }
     }
 }

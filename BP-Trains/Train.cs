@@ -22,5 +22,7 @@ namespace BPTrains
         }
 
         public int TimeSpentEnRoute { get; set; }
+
+        public bool Parked { get; set; } = false;
     }
 }

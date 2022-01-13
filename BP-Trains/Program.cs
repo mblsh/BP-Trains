@@ -121,7 +121,7 @@ namespace BPTrains
             {
                 var load = String.Join(",", move.PickUps.Select(p => p.Name));
                 var drop = String.Join(",", move.DropOffs.Select(p => p.Name));
-                var moving = "staying";
+                var moving = "parked";
                 var arr = "";
                 if (move.Route != null)
                 {
@@ -135,19 +135,25 @@ namespace BPTrains
 
         static void Main(string[] args)
         {
-            var filename = "input3.txt";
+            var filename = "input5.txt";
             if (args.Length > 0 && !string.IsNullOrEmpty(args[0]))
                 filename = args[0];
 
             var mtsOneByOne = ParseInput(filename);
-            var routes = mtsOneByOne.SolveViaSingleDeliveries();
-            Console.WriteLine("Deliver one-by-one");
-            PrintOutput(routes);
+            var moves = mtsOneByOne.SolveViaSingleDeliveries();
+            Console.WriteLine($"Deliver one-by-one ({moves.Count} moves)");
+            PrintOutput(moves);
 
+            // solver modifies the MTS state, so need to re-create to  try out another solution
             var mtsWithPickups = ParseInput(filename); 
-            routes = mtsWithPickups.SolveWithPickUpsAlongRoute();
-            Console.WriteLine("Deliver with pickups");
-            PrintOutput(routes);
+            moves = mtsWithPickups.SolveWithPickUpsAlongRoute();
+            Console.WriteLine($"Deliver with pickups ({moves.Count} moves)");
+            PrintOutput(moves);
+
+            var mtsWithGreedyTrains = ParseInput(filename);
+            moves = mtsWithGreedyTrains.SolveWithGreedyTrains();
+            Console.WriteLine($"Deliver with greedy trains ({moves.Count} moves)");
+            PrintOutput(moves);
 
             mtsWithPickups.SolveBetter(); // <- ideas for improvement inside
         }
