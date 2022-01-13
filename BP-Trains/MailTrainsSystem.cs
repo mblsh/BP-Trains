@@ -377,13 +377,13 @@ namespace BPTrains
             // iterate over time and consider system state at every timeframe
             while (true)
             {
-                // look for an idle trains (idle == not en route to next destination and still have valid targets)
+                // look for idle trains (idle == not en route to next destination and still have valid targets)
                 foreach (var train in _trains.Where(t => t.TimeSpentEnRoute <= currentTime && !t.Parked))
                 {
-                    // plan the next move
+                    // plan the next move for each found train
                     var nextMove = new Move() { StartStation = train.CurrentStation, StartTime = currentTime, Train = train };
 
-                    //see if it need to do a drop off or can pick something up at current station
+                    // see if it needs to do a drop off or can pick something up at its current station
                     var packages2dropoff = train.Packages.Where(p => p.DropOff == train.CurrentStation).ToList();
                     foreach (var p2d in packages2dropoff)
                     {
@@ -403,24 +403,25 @@ namespace BPTrains
                                                                          && d.Weight <= train.FreeCapacity);
                     }
 
-                    //plan the route, choosing the nearest valid pick up or drop off
+                    // plan the next route, using all valid pick up and drop off points as potential targets
                     var potentialTargets = _deliveries.Where(d=> d.Weight <= train.FreeCapacity)
                                                                 .Select(d => d.PickUp)
                                                                 .Union(train.Packages.Select(p => p.DropOff));
 
                     if (!potentialTargets.Any())
                     {
-                        // train has dropped everything off and there are no more suitable deliveries left
+                        // train had dropped everything off and there are no more suitable deliveries left
+                        // park it, removing from all subsequent checks
                         train.Parked = true;
                         nextMove.Route = null;
                         moves.Add(nextMove);
                         continue;
                     }
 
+                    // consider potential next stations one by one and find the closest one
                     Station closestNextStation = null;
                     Route nextRoute = null;
                     var fastestTime = int.MaxValue;
-                    // consider potential next stations one by one and find the closest one
                     foreach (var nextStation in potentialTargets)
                     {
                         var fastestRoute = GetFastestPath(train.CurrentStation, nextStation);
@@ -451,8 +452,10 @@ namespace BPTrains
                     moves.Add(nextMove);
                 }
 
+                // move time forward
                 currentTime++;
 
+                // break and return solution if no more deliveries can be made
                 if (_trains.All(t => t.Parked))
                     break;
             }
